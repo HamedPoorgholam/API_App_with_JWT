@@ -1,4 +1,4 @@
-# To_Do_List_api With Token Authentication
+# To_Do_List_API With Token Authentication
 To do list api developed by Django rest frame work that has full CRUD functionality and token authentication.
 This is just backend part of app. We can add front end with view.js, react or ajax, anytime we want.
 
