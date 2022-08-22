@@ -1,12 +1,15 @@
+from tokenize import Token
 from django.http import JsonResponse,Http404
 from rest_framework.decorators  import api_view
 from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
 from .models import Task
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authtoken.models import Token
+
 
 
 # Using generic class-bassed views
@@ -19,6 +22,21 @@ class TaskList(generics.ListCreateAPIView):
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+@api_view(['POST'])
+def Registraion(request):
+    if request.method == "POST":
+        serializer = UserSerializer(data=request.data)
+        data={}
+        if serializer.is_valid():
+            user=serializer.save()
+            data['massage']="Registeraion Was Successfull!"
+            data['token']=Token.objects.get(user=user).key
+
+        return Response(data)    
+
+
+
 
 #Function Base API-viwes!!!!!!!!
 
