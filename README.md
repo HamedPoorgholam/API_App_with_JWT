@@ -13,6 +13,7 @@ This is just backend part of app. We can add front end with view.js, react or aj
 <img src="screenshots/0.9.png" width='1200' heigth='650'>
 
 <h3>• Token Creation for User Instance</h3>
+<h4> with django signals after registraion token will be create in data base</h4>
 <img src="screenshots/0.10.png" width='1200' heigth='650'>
 
 
