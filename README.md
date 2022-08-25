@@ -2,22 +2,6 @@
 
 This is just backend part of app. We can add front end with view.js, react or ajax, anytime we want.
 
-<h3> We can choose one these options for making a api:</h3>
-
-<h4>• Funcation Base API-Views</h4>
-<img src="screenshots/0.0.0.png" width='1200' heigth='650'>
-
-<h4>• Class Base API-views: Using APIView Class</h4>
-<img src="screenshots/0.01.png" width='1200' heigth='650'>
-
-
-<h4>• Class Base API-views: Using Mixins</h4>
-<img src="screenshots/0.0.2.png" width='1200' heigth='650'>
-
-
-<h4>• Class Base API-views: Using Generic Class-basse Views</h4>
-<h5> (most DRY and Concise Method)</h5>
-<img src="screenshots/0.0.3.png" width='1200' heigth='650'>
 
 <h4>• Jason Web Token</h4>
 <h3> if you are not a SuperUser you don't have permission for Using this route and creating tokens<h3>
