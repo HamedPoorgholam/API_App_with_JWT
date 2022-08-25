@@ -1,4 +1,3 @@
-from tokenize import Token
 from django.http import JsonResponse,Http404
 from rest_framework.decorators  import api_view
 from rest_framework.views import APIView
@@ -9,6 +8,39 @@ from .serializers import TaskSerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAdminUser
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from api import serializers
+from .permisions import IsSuperUserOrReadOnly, IsUserTask
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from api import permisions
+
+
+# we nead python -m pip install django-cors-headers for front and back cominucate
+#INSTALLED_APPS = ["corsheaders"]
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        # ...
+
+        return token
+
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+    authentication_classes = [TokenAuthentication,SessionAuthentication]
+    permission_classes = [IsAdminUser] 
 
 
 
@@ -17,11 +49,14 @@ from rest_framework.authtoken.models import Token
 class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-
+    authentication_classes = [TokenAuthentication,SessionAuthentication]
+    permission_classes = [IsSuperUserOrReadOnly]
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    authentication_classes = [TokenAuthentication,SessionAuthentication]
+    permission_classes = [IsUserTask]
 
 @api_view(['POST'])
 def Registraion(request):
@@ -35,7 +70,28 @@ def Registraion(request):
 
         return Response(data)    
 
+# Using viewset
 
+class TaskViewset(viewsets.ViewSet):
+    def list(self, request):
+        queryset = Task.objects.all()
+        serializer = TaskSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = TaskSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+
+    
+    def retrieve(self, request, pk=None):
+        queryset = Task.objects.all()
+        task = get_object_or_404(queryset, pk=pk)
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)    
 
 
 #Function Base API-viwes!!!!!!!!
