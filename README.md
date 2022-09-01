@@ -1,6 +1,6 @@
 # To_Do_List_API With CRUD Functionality, JWT, Token Authentication, Session Authentication and Custom Permisions
 
-This is just backend part of app. We can add front end with view.js, react or ajax, anytime we want.
+This is just backend part of the app. We can add front end with view.js, react or ajax, anytime we want.
 
 
 <h2>• Jason Web Token</h2>
